@@ -6,9 +6,13 @@ const {buildJSON } = require('./src/buildJSON');
 
 server.use(express.static(path.join(__dirname + '/public')));
 
-server.get('/',async (request, response) => {
-    const data = await buildJSON();
+server.get('/',(request, response) => {
     response.sendFile(path.join(__dirname + '/html/index.html'));
+});
+
+server.get('/data', async (request, response) => {
+    const data = await buildJSON();
+    response.send(data);
 });
 
 server.listen("5000");

@@ -11,11 +11,14 @@ module.exports.buildJSON = async () => {
     let jsonResult = { data : []};
 
     for(let i = 0;  i < users.length; i++){
+        
+        //Creating the body of the message
         let userPosts = posts.filter(post => post.userId === users[i].id).map(result => {
             return {"body" : result.title}
         });
+
         let username = users[i].name.split(" ")[0];
-        let responseJson = {};
+        
         //get gender of the user
         let genderURL = genderEndPoint + username;
         let genderJSON = await getData(genderURL);
@@ -24,12 +27,11 @@ module.exports.buildJSON = async () => {
         //get image of user
         let imgName = gender === "female" ? "josephine" : "jacques";
         let imgURL = imgEndPoint + imgName;
-        let img = await getUnparsedData(imgURL);
 
         //bulding JSON
         const json = {
             "username" : users[i].name,
-            "userImg" : img,
+            "userImg" : imgURL,
             "posts" : userPosts
         };
         jsonResult.data.push(json);
